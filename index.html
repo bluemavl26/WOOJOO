@@ -30,31 +30,40 @@ canvas#game.hidecur{cursor:none}
 #counter{top:var(--st);left:var(--sl);display:flex;align-items:center;
   gap:calc(12px*var(--ui));border-radius:calc(20px*var(--ui));
   padding:calc(11px*var(--ui)) calc(20px*var(--ui)) calc(11px*var(--ui)) calc(13px*var(--ui));
-  max-width:calc(100vw - var(--sl) - var(--sr))}
+  max-width:calc(100vw - var(--sl) - var(--sr) - 116px)}
+#counter>div:last-child{min-width:0}
 .zbadge{width:calc(42px*var(--ui));height:calc(42px*var(--ui));flex:none;
   border-radius:calc(14px*var(--ui));display:grid;place-content:center;
   line-height:1;font-size:calc(9px*var(--ui));letter-spacing:1px;color:#0a1830;font-weight:700;
   background:linear-gradient(150deg,#9ff0e0,#63e0e8);box-shadow:0 4px 14px rgba(99,224,232,.4)}
 .zbadge b{font-size:calc(19px*var(--ui));display:block;text-align:center;margin-top:1px}
-.zline{display:flex;align-items:baseline;gap:7px;margin-bottom:calc(5px*var(--ui))}
-.zline b{font-size:calc(16px*var(--ui));letter-spacing:-.3px}
+.zline{display:flex;align-items:baseline;gap:7px;margin-bottom:calc(5px*var(--ui));white-space:nowrap}
+.zline b{font-size:max(14px,calc(16px*var(--ui)));letter-spacing:-.3px}
 .zline u{text-decoration:none;font-size:calc(9.5px*var(--ui));color:var(--dim);letter-spacing:1.4px}
-#counter small{color:var(--dim);font-size:calc(11px*var(--ui));font-weight:400;display:block;
+#counter small{color:var(--dim);font-size:max(10.5px,calc(11px*var(--ui)));font-weight:400;display:block;
+  line-height:1.45;word-break:keep-all;
   margin-top:calc(4px*var(--ui))}
-#counter small b{color:var(--gold);font-weight:700;margin-left:5px;
+#counter small b{color:var(--gold);font-weight:700;margin-left:5px;white-space:nowrap;
   text-shadow:0 0 10px rgba(255,224,138,.6)}
-.bar{width:calc(132px*var(--ui));height:calc(5px*var(--ui));border-radius:9px;
+.bar{width:calc(132px*var(--ui));max-width:100%;height:calc(5px*var(--ui));border-radius:9px;
   background:rgba(255,255,255,.13);overflow:hidden}
 
 /* 레벨업 배너 */
-#levelup{position:fixed;left:50%;top:34%;transform:translate(-50%,-50%) scale(.9);z-index:28;
-  text-align:center;opacity:0;pointer-events:none;transition:.5s cubic-bezier(.2,1,.3,1)}
+#levelup{position:fixed;left:50%;top:30%;transform:translate(-50%,-50%) scale(.9);z-index:28;
+  width:min(calc(100vw - 28px),640px);word-break:keep-all;text-align:center;opacity:0;pointer-events:none;transition:.5s cubic-bezier(.2,1,.3,1)}
 #levelup.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+/* 배너가 뜨는 동안에는 정보판·안내문이 글씨와 겹치지 않게 잠깐 숨긴다 */
+#counter{transition:opacity .4s}
+body:has(#levelup.on) #counter{opacity:0}
+body:has(#levelup.on) #hint{opacity:0!important}
 #levelup .lv{font-size:clamp(10px,2.6vmin,13px);letter-spacing:5px;color:var(--cyan);margin-bottom:10px}
 #levelup .ttl{font-size:clamp(26px,7.6vmin,44px);font-weight:800;letter-spacing:-1.5px;
   text-shadow:0 0 34px rgba(120,230,255,.8),0 6px 26px rgba(0,0,0,.7)}
 #levelup .go{margin-top:12px;font-size:clamp(12px,3vmin,15px);color:#cfe2ff}
 #levelup .go b{color:var(--mint)}
+@media (max-height:480px){ #levelup{top:23%} #levelup .lv{margin-bottom:3px} #levelup .go{margin-top:4px}
+  #levelup .ttl{font-size:clamp(20px,5.8vmin,28px)}
+  #levelup .warn{margin-top:7px;padding:4px 14px} }
 #levelup .warn{margin-top:14px;display:inline-block;font-size:clamp(11px,2.7vmin,13.5px);
   color:#ffd9e2;background:rgba(200,40,80,.26);border:1px solid rgba(255,140,170,.5);
   border-radius:999px;padding:7px 16px}
@@ -63,32 +72,40 @@ canvas#game.hidecur{cursor:none}
   background:linear-gradient(90deg,var(--cyan),var(--mint));transition:width .6s cubic-bezier(.2,.9,.2,1)}
 
 #tools{top:var(--st);right:var(--sr);display:flex;gap:calc(8px*var(--ui));pointer-events:auto}
-.btn{border-radius:999px;padding:calc(9px*var(--ui)) calc(17px*var(--ui));
-  font-size:calc(14px*var(--ui));font-weight:600;cursor:pointer;
+.btn{border-radius:999px;padding:calc(9px*var(--ui)) calc(17px*var(--ui));min-height:40px;
+  font-size:max(13px,calc(14px*var(--ui)));font-weight:600;cursor:pointer;
   color:var(--ink);transition:.18s;font-family:inherit;white-space:nowrap}
 .btn:hover{background:rgba(40,90,170,.7);transform:translateY(-1px)}
 .btn:active{transform:scale(.95)}
-.btn.icon{width:calc(40px*var(--ui));padding:0;height:calc(40px*var(--ui));font-size:calc(16px*var(--ui))}
+.btn.icon{width:max(40px,calc(40px*var(--ui)));padding:0;height:max(40px,calc(40px*var(--ui)));
+  font-size:max(15px,calc(16px*var(--ui)))}
 
 #map{right:var(--sr);bottom:var(--sb);width:var(--radar);text-align:center}
 #radar{width:var(--radar);height:var(--radar);display:block;filter:drop-shadow(0 8px 26px rgba(0,0,0,.55))}
-#sector{margin-top:5px;font-size:calc(10.5px*var(--ui));color:var(--dim);letter-spacing:1.6px}
+#sector{margin-top:5px;font-size:max(9.5px,calc(10.5px*var(--ui)));white-space:nowrap;color:var(--dim);letter-spacing:1.6px}
 
-#hint{left:50%;bottom:var(--sb);transform:translateX(-50%);font-size:calc(13px*var(--ui));
-  color:#c3d8ff;padding:calc(9px*var(--ui)) calc(20px*var(--ui));border-radius:999px;
+#hint{left:var(--sl);right:var(--sr);bottom:var(--sb);margin:0 auto;width:fit-content;
+  font-size:max(12px,calc(13px*var(--ui)));
+  color:#c3d8ff;padding:calc(9px*var(--ui)) calc(20px*var(--ui));border-radius:22px;
   transition:opacity 1s;text-align:center;line-height:1.5;word-break:keep-all;
-  max-width:min(calc(100vw - 28px), 780px)}
+  max-width:min(calc(100vw - var(--sl) - var(--sr)), 780px)}
 
 /* 우주지도와 힌트가 겹치는 좁은/낮은 화면 */
-@media (max-width:640px){
-  #hint{bottom:calc(var(--sb) + var(--radar) + 22px)}
+@media (max-width:1100px){                     /* 지도 옆 자리가 모자라면 */
+  #hint{right:calc(var(--sr) + var(--radar) + 12px);
+    max-width:min(calc(100vw - var(--sl) - var(--sr) - var(--radar) - 12px), 780px)}
 }
-@media (max-height:430px){                     /* 가로로 누운 폰 */
-  #hint{bottom:calc(var(--sb) + 2px);left:calc(50% - var(--radar)/2 - 8px)}
+@media (max-width:640px) and (orientation:portrait){   /* 세로 폰: 지도 위로 */
+  #hint{right:var(--sr);bottom:calc(var(--sb) + var(--radar) + 26px);
+    max-width:calc(100vw - var(--sl) - var(--sr))}
+}
+@media (max-width:420px){                      /* 좁은 폰: 상단 정보판 정리 */
+  .zline u{display:none}
+  #counter small b{display:block;margin-left:0}
 }
 
 /* ── 체력 ── */
-.hearts{display:flex;gap:3px;margin-top:calc(7px*var(--ui));font-size:calc(14px*var(--ui));line-height:1}
+.hearts{display:flex;gap:3px;margin-top:calc(7px*var(--ui));font-size:max(13px,calc(14px*var(--ui)));line-height:1}
 .hearts span{color:#ff6f91;text-shadow:0 0 9px rgba(255,110,150,.85);
   transition:color .3s,text-shadow .3s;display:inline-block}
 .hearts span.off{color:#2c3a5c;text-shadow:none}
@@ -107,7 +124,7 @@ canvas#game.hidecur{cursor:none}
 #down.on{display:grid;animation:fadeIn .45s ease}
 #down .t{font-size:clamp(22px,6.4vmin,36px);font-weight:800;letter-spacing:-1.2px;
   text-shadow:0 0 32px rgba(255,120,150,.75),0 6px 26px rgba(0,0,0,.7)}
-#down .s{margin-top:11px;font-size:clamp(12px,3vmin,15px);color:#cfe2ff;padding:0 18px}
+#down .s{word-break:keep-all;line-height:1.6;margin-top:11px;font-size:clamp(12px,3vmin,15px);color:#cfe2ff;padding:0 18px}
 #down .s b{color:var(--mint)}
 #down .dots{margin-top:16px;font-size:12px;letter-spacing:5px;color:#8fa8d4}
 
@@ -133,7 +150,7 @@ canvas#game.hidecur{cursor:none}
 #secret p.last{text-align:center;font-size:clamp(14.5px,3.8vmin,17.5px);color:#fff;
   margin-top:28px;line-height:1.85;text-shadow:0 0 26px rgba(170,200,255,.45)}
 #secret.go p{opacity:1;transform:none}
-.sclose{margin-top:16px;background:rgba(255,216,106,.14);border:1px solid rgba(255,216,106,.5);
+.sclose{margin-top:16px;min-width:120px;background:rgba(255,216,106,.14);border:1px solid rgba(255,216,106,.5);
   color:#ffe8b0;opacity:0;pointer-events:auto;transition:opacity .8s ease 4.4s}
 #secret.go .sclose{opacity:1}
 @media (prefers-reduced-motion:reduce){
@@ -145,7 +162,7 @@ canvas#game.hidecur{cursor:none}
 #cardWrap{position:fixed;inset:0;display:none;place-items:center;z-index:20;pointer-events:none;
   background:radial-gradient(circle at 50% 46%,rgba(20,50,110,.5),rgba(3,8,24,.88))}
 #cardWrap.on{display:grid;pointer-events:auto;cursor:pointer}
-.card{width:min(calc(100vw - 34px),282px);
+.card{width:min(calc(100vw - 34px),300px);
   padding:24px 22px 20px;border-radius:26px;text-align:center;position:relative;
   background:linear-gradient(168deg,rgba(28,58,118,.95),rgba(8,18,46,.98));
   border:1px solid rgba(255,255,255,.18);
@@ -160,7 +177,7 @@ canvas#game.hidecur{cursor:none}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
 .tag{display:inline-block;font-size:10.5px;letter-spacing:2px;padding:3px 12px;border-radius:99px;
   border:1px solid currentColor;margin-bottom:9px}
-.card h2{font-size:26px;letter-spacing:-.6px;margin-bottom:2px}
+.card h2{font-size:26px;letter-spacing:-.6px;margin-bottom:2px;word-break:keep-all;line-height:1.2}
 .card .en{font-size:11.5px;color:var(--dim);letter-spacing:1.6px;margin-bottom:14px}
 .stats{display:grid;gap:1px;background:rgba(255,255,255,.1);border-radius:12px;overflow:hidden;
   margin-bottom:13px;font-size:11.5px}
@@ -174,34 +191,55 @@ canvas#game.hidecur{cursor:none}
   padding:5px 15px;border-radius:99px;letter-spacing:1px;box-shadow:0 4px 16px rgba(255,190,90,.5)}
 /* 화면이 낮으면 카드 안에서 스크롤 (뱃지는 카드 안쪽으로) */
 @media (max-height:640px){
-  .card{max-height:calc(100dvh - 24px);overflow-y:auto;padding-top:32px;touch-action:pan-y}
+  .card{max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px);overflow-y:auto;
+    padding-top:32px;touch-action:pan-y;overscroll-behavior:contain}
   .card .orb{width:min(118px,22vh);height:min(118px,22vh)}
   .newbadge{top:7px}
+}
+/* 가로로 누운 폰: 그림·이름 | 설명 을 나란히 놓아 스크롤 없이 한눈에 */
+@media (max-height:520px) and (orientation:landscape){
+  .card{width:min(calc(100vw - 34px),600px);display:flex;align-items:center;gap:20px;
+    padding:30px 22px 16px}
+  .card .ca{flex:0 0 40%;min-width:0}
+  .newbadge{left:calc(22px + (100% - 64px)*.2)}
+  .card .cb{flex:1;min-width:0}
+  .card .orb{width:min(104px,24vh);height:min(104px,24vh);margin-bottom:8px}
+  .card h2{font-size:22px}
+  .card .en{margin-bottom:0}
+  .stats{margin-bottom:9px}
+  .card p{line-height:1.55}
 }
 
 /* ── 도감 ── */
 #dex{position:fixed;inset:0;z-index:30;display:none;background:rgba(4,10,28,.95);
   backdrop-filter:blur(16px);overflow-y:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y;
-  padding:calc(var(--st) + 16px) max(14px,var(--sr)) calc(var(--sb) + 50px) max(14px,var(--sl))}
+  overscroll-behavior:contain;
+  padding:0 max(14px,var(--sr)) calc(var(--sb) + 50px) max(14px,var(--sl))}
 #dex.on{display:block;animation:fadeIn .25s ease}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.dexhead{max-width:920px;margin:0 auto 20px;display:flex;align-items:baseline;gap:14px;
-  flex-wrap:wrap;position:sticky;top:0;z-index:2;
-  background:linear-gradient(180deg,rgba(4,10,28,.98) 70%,rgba(4,10,28,0));
-  padding-bottom:10px}
+.dexhead{max-width:920px;margin:0 auto 14px;display:flex;align-items:center;gap:8px;
+  position:sticky;top:0;z-index:2;background:#040a1c;
+  padding:calc(var(--st) + 12px) 0 10px}
+.dexhead::after{content:"";position:absolute;left:0;right:0;top:100%;height:16px;pointer-events:none;
+  background:linear-gradient(180deg,#040a1c,rgba(4,10,28,0))}
+.dexhead .dt{flex:1;min-width:0;display:flex;align-items:baseline;gap:4px 12px;flex-wrap:wrap}
+.dexhead h1,.dexhead span{white-space:nowrap}
+.dexhead .btn{flex:none}
+@media (max-width:420px){ .dexhead .btn{padding-left:13px;padding-right:13px} }
 .dexhead h1{font-size:clamp(19px,4.6vmin,26px);letter-spacing:-.6px}
 .dexhead span{color:var(--dim);font-size:clamp(11px,2.8vmin,13px)}
 .dexhead .btn{pointer-events:auto;background:var(--panel);border:1px solid var(--line)}
-.dexhead #btnSecret{margin-left:auto;background:rgba(255,216,106,.14);
+.dexhead #btnSecret{background:rgba(255,216,106,.14);
   border-color:rgba(255,216,106,.45);color:#ffe8b0}
-.dexhead #btnSecret+ .btn{margin-left:0}
-.dexhead #btnClose:first-of-type{margin-left:auto}
+.dexhead #btnSecret[hidden]{display:none}
 .g{display:grid;
   grid-template-columns:repeat(auto-fill,minmax(clamp(92px,26vw,120px),1fr));
   gap:clamp(8px,2vw,12px)}
 .zsec{max-width:920px;margin:0 auto 30px}
-.zhead{display:flex;align-items:center;gap:10px;margin:0 2px 12px}
-.zhead b{font-size:16px}
+.zhead{display:flex;align-items:center;gap:6px 10px;margin:0 2px 12px;flex-wrap:wrap}
+.zhead b{font-size:16px;white-space:nowrap}
+.zhead span{white-space:nowrap;flex:none}
+@media (max-width:420px){ .zhead u{display:none} }
 .zhead u{text-decoration:none;font-size:10px;color:var(--dim);letter-spacing:1.6px}
 .zhead .p{margin-left:auto;font-size:12px;color:var(--dim)}
 .zhead .lockmark{font-size:11px;color:#6f83ab;border:1px solid rgba(150,180,230,.3);
@@ -214,7 +252,7 @@ canvas#game.hidecur{cursor:none}
 .cell.got:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.34)}
 .cell .o{width:54px;height:54px;margin:0 auto 9px;background-size:contain;
   background-repeat:no-repeat;background-position:center}
-.cell b{display:block;font-size:12.5px;font-weight:600}
+.cell b{display:block;font-size:12.5px;font-weight:600;word-break:keep-all;line-height:1.3;overflow-wrap:anywhere}
 .cell i{display:block;font-size:10px;color:var(--dim);font-style:normal;margin-top:2px}
 .cell.lock .o{background:rgba(255,255,255,.06);border-radius:50%}
 .cell.lock b{color:#3d4f74}
@@ -277,7 +315,7 @@ canvas#game.hidecur{cursor:none}
 
 <div id="dex">
   <div class="dexhead">
-    <h1>우주 도감</h1><span id="dexCount"></span>
+    <div class="dt"><h1>우주 도감</h1><span id="dexCount"></span></div>
     <button class="btn" id="btnSecret" hidden>🔑 우주의 비밀</button>
     <button class="btn" id="btnClose">닫기</button>
   </div>
@@ -1716,22 +1754,23 @@ const cardWrap=document.getElementById('cardWrap'), cardEl=document.getElementBy
 let cardTimer=null;
 function showCard(e,isNew){
   const R=RARITY[e.r];
-  cardEl.className='card'; cardOpen=true;
+  cardEl.className='card'; cardOpen=true; cardShownAt=performance.now(); cardEl.scrollTop=0;
   cardEl.innerHTML=`${isNew?'<div class="newbadge">새로 발견!</div>':''}
-    <div class="orb" style="background-image:url(${spriteURL(e)})"></div>
+    <div class="ca"><div class="orb" style="background-image:url(${spriteURL(e)})"></div>
     <span class="tag" style="color:${R.color}">${R.name} · ${e.t}</span>
-    <h2>${e.ko}</h2><div class="en">${e.en}</div>
-    <div class="stats">
+    <h2>${e.ko}</h2><div class="en">${e.en}</div></div>
+    <div class="cb"><div class="stats">
       <div><span>크기</span><em>${e.d}</em></div>
       <div><span>온도</span><em>${e.tp}</em></div>
       <div><span>거리</span><em>${e.x}</em></div>
     </div>
     <p>${e.f}</p>
-    <div style="margin-top:11px;font-size:10.5px;color:#7a91bd;letter-spacing:1px">화면을 누르면 닫혀요</div>`;
+    <div style="margin-top:11px;font-size:10.5px;color:#7a91bd;letter-spacing:1px">화면을 누르면 닫혀요</div></div>`;
   cardWrap.classList.add('on'); timeScale=.12;
   clearTimeout(cardTimer);
   cardTimer=setTimeout(hideCard, isNew?9000:5500);
 }
+let cardShownAt=0;
 function hideCard(){
   if(!cardOpen) return;
   clearTimeout(cardTimer); cardOpen=false;
@@ -1739,7 +1778,8 @@ function hideCard(){
   setTimeout(()=>cardWrap.classList.remove('on'),320);
   timeScale=1;
 }
-cardWrap.addEventListener('pointerdown',ev=>{ev.stopPropagation();hideCard();});
+cardWrap.addEventListener('pointerdown',ev=>ev.stopPropagation());
+cardWrap.addEventListener('click',()=>{ if(performance.now()-cardShownAt>350) hideCard(); });
 
 function collect(st){
   const e=st.e, isNew=!dex[e.id];
